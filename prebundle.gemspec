@@ -6,22 +6,22 @@ require "prebundle/version"
 Gem::Specification.new do |spec|
   spec.name          = "prebundle"
   spec.version       = Prebundle::VERSION
-  spec.authors       = ["ohkubo kohei"]
+  spec.authors       = ["kuboon"]
   spec.email         = ["kuboon@trick-with.net"]
 
-  spec.summary       = %q{TODO: Write a short summary, because RubyGems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{Run prebundle before bundle install}
+  spec.description   = %q{I will output required actions like "yum install hogehoge", "apt install fugafuga" etc }
+  spec.homepage      = "https://github.com/kuboon/prebundle"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
   if spec.respond_to?(:metadata)
-    spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
+    spec.metadata["allowed_push_host"] = "https://rubygems.org"
 
-    spec.metadata["homepage_uri"] = spec.homepage
-    spec.metadata["source_code_uri"] = "TODO: Put your gem's public repo URL here."
-    spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
+    #spec.metadata["homepage_uri"] = spec.homepage
+    spec.metadata["source_code_uri"] = spec.homepage
+    #spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
   else
     raise "RubyGems 2.0 or newer is required to protect against " \
       "public gem pushes."
