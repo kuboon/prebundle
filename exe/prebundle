@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require 'prebundle/cli'
+Prebundle::CLI.start
+

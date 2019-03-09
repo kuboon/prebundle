@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     prebundle (0.1.0)
+      thor
 
 GEM
   remote: https://rubygems.org/
