@@ -1,5 +1,8 @@
 require "thor"
-class Ubuntu
+
+
+class Linux; end
+class Ubuntu < Linux
   def initialize(gems)
     @gems = gems
   end
@@ -17,21 +20,36 @@ class Ubuntu
   end
 end
 
-module Prebundle
-  class CLI < Thor
-    desc "show", "Reads Gemfile on current dir and outputs required setup commands."
-    def show
-      # load Gemfile
-      # get list of gems
-      gems = ['mysql2']
+class CentOS < Linux; end
+class AmazonLinux < CentOS
+#yum install mysql-devel
+end
 
-      # get os/distribution
-      klass = Ubuntu
-      # get list of required packages
-      # get install command
-      # show result
-      puts klass.new(gems).command # yum install mysql-devel
-      puts "# prebundle show | sudo sh"
+
+module Prebundle
+  def self.distribution_class(hint = `lsb_release -sd`)
+    case hint
+    when /\AUbuntu/; Ubuntu
+    else raise "Unknown distribution"
+    end
+  end
+
+  def self.list_all_gems_in_Gemfile
+    ["mysql2"]
+  end
+
+  class CLI < Thor
+    desc "all", "Reads Gemfile on current dir and outputs required setup commands."
+    def all
+      gems = ::Prebundle::list_all_gems_in_Gemfile
+
+      puts Prebundle::distribution_class.new(gems).command
+      puts "# prebundle all | sudo sh"
+      STDERR.puts "# Unless it helped you, please report the issue https://github.com/kuboon/prebundle/issues/new?assignees=kuboon&labels=&template=add-gem-package-info.md&title=[add]" 
+    end
+
+    desc "gem [gemname]", "outputs required setup commands for the gem"
+    def gem(gemname)
     end
   end
 end
