@@ -10,6 +10,7 @@ class Ubuntu < Linux
   def packages
     @gems.map do |gem|
       case gem
+      when 'curses'; "libncursesw5-dev"
       when 'mysql2'; "libmysqlclient-dev"
       end
     end.flatten.uniq
@@ -35,7 +36,7 @@ module Prebundle
   end
 
   def self.list_all_gems_in_Gemfile
-    ["mysql2"]
+    %w[mysql2 curses]
   end
 
   class CLI < Thor
@@ -50,6 +51,9 @@ module Prebundle
 
     desc "gem [gemname]", "outputs required setup commands for the gem"
     def gem(gemname)
+      puts Prebundle::distribution_class.new([gemname]).command
+      puts "# prebundle gem #{gemname} | sudo sh"
+      STDERR.puts "# Unless it helped you, please report the issue https://github.com/kuboon/prebundle/issues/new?assignees=kuboon&labels=&template=add-gem-package-info.md&title=[add]" 
     end
   end
 end
