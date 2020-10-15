@@ -1,60 +1,32 @@
 require "thor"
 
-
-class Linux; end
-class Ubuntu < Linux
-  def initialize(gems)
-    @gems = gems
-  end
-
-  def packages
-    @gems.map do |gem|
-      case gem
-      when 'curses'; "libncursesw5-dev"
-      when 'mysql2'; "libmysqlclient-dev"
-      end
-    end.flatten.uniq
-  end
-
-  def command
-    "apt install -y #{packages.join(' ')}"
-  end
-end
-
-class CentOS < Linux; end
-class AmazonLinux < CentOS
-#yum install mysql-devel
-end
-
-
 module Prebundle
-  def self.distribution_class(hint = `lsb_release -sd`)
-    case hint
-    when /\AUbuntu/; Ubuntu
-    else raise "Unknown distribution"
-    end
-  end
-
-  def self.list_all_gems_in_Gemfile
-    %w[mysql2 curses]
-  end
-
   class CLI < Thor
+    def self.exit_on_failure?
+      true
+    end
+
     desc "all", "Reads Gemfile on current dir and outputs required setup commands."
     def all
       gems = ::Prebundle::list_all_gems_in_Gemfile
 
+      STDERR.puts "# Unless this helped you, please report the issue https://github.com/kuboon/prebundle/issues/new?assignees=kuboon&labels=&template=add-gem-package-info.md&title=[add]" 
       puts Prebundle::distribution_class.new(gems).command
       puts "# prebundle all | sudo sh"
-      STDERR.puts "# Unless it helped you, please report the issue https://github.com/kuboon/prebundle/issues/new?assignees=kuboon&labels=&template=add-gem-package-info.md&title=[add]" 
     end
 
     desc "gem [gemname]", "outputs required setup commands for the gem"
     def gem(gemname)
+      STDERR.puts "# Unless this helped you, please report the issue https://github.com/kuboon/prebundle/issues/new?assignees=kuboon&labels=&template=add-gem-package-info.md&title=[add]" 
       puts Prebundle::distribution_class.new([gemname]).command
       puts "# prebundle gem #{gemname} | sudo sh"
-      STDERR.puts "# Unless it helped you, please report the issue https://github.com/kuboon/prebundle/issues/new?assignees=kuboon&labels=&template=add-gem-package-info.md&title=[add]" 
     end
+
+    desc "version", "outputs version"
+    def version
+      puts ::Prebundle::VERSION
+    end
+
   end
 end
 
