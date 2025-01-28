@@ -7,6 +7,7 @@ module Prebundle
   def self.distribution_class(hint = `lsb_release -sd`)
     case hint
     when /\AUbuntu/; OS::Ubuntu
+    when /\ADebian/; OS::Debian
     else raise "Unknown distribution"
     end
   end
