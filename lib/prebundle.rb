@@ -13,6 +13,8 @@ module Prebundle
   end
 
   def self.list_all_gems_in_Gemfile
-    %w[mysql2 curses]
+    # %w[mysql2 curses]
+    gemfile_lock = File.read('Gemfile.lock')
+    gemfile_lock.scan(/^\s{4}(\S+)/).flatten.uniq
   end
 end

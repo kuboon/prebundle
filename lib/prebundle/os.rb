@@ -3,7 +3,15 @@ module OS
     def initialize(gems)
       @gems = gems
     end
+    def packages
+      []
+    end
     def command
+      list = packages
+      return if list.empty?
+      build_command(list)
+    end
+    def build_command(packages)
       raise "not impl"
     end
   end
@@ -17,10 +25,11 @@ module OS
         when 'curses'; "libncursesw5-dev"
         when 'mysql2'; "libmysqlclient-dev"
         when 'pg'; 'libpq-dev'
+        when 'sqlite3'; %w[libsqlite3-dev pkg-config]
         end
-      end.flatten.uniq
+      end.flatten.compact.uniq
     end
-    def command
+    def build_command(packages)
       "apt install -y #{packages.join(' ')}"
     end
   end
@@ -35,8 +44,8 @@ module OS
         end
       end.flatten.uniq
     end
-    def command
-      "yum install mysql-devel"
+    def build_command(packages)
+      "yum install #{packages.join(' ')}"
     end
   end
   
@@ -44,14 +53,14 @@ module OS
   end
 
   class Fedora < Linux
-    def command
-      "dnf"
+    def build_command(packages)
+      "dnf install #{packages.join(' ')}"
     end
   end
 
   class FreeBSD < Base
-    def command
-      "pkg"
+    def build_command(packages)
+      "pkg install #{packages.join(' ')}"
     end
   end
 end

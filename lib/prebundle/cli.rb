@@ -11,14 +11,14 @@ module Prebundle
       gems = ::Prebundle::list_all_gems_in_Gemfile
 
       STDERR.puts "# Unless this helped you, please report the issue https://github.com/kuboon/prebundle/issues/new?assignees=kuboon&labels=&template=add-gem-package-info.md&title=[add]" 
-      puts Prebundle::distribution_class.new(gems).command
+      puts Prebundle::distribution_class.new(gems).command || "# You need nothing to install"
       puts "# prebundle all | sudo sh"
     end
 
     desc "gem [gemname]", "outputs required setup commands for the gem"
     def gem(gemname)
       STDERR.puts "# Unless this helped you, please report the issue https://github.com/kuboon/prebundle/issues/new?assignees=kuboon&labels=&template=add-gem-package-info.md&title=[add]" 
-      puts Prebundle::distribution_class.new([gemname]).command
+      puts Prebundle::distribution_class.new([gemname]).command || "# You need nothing to install"
       puts "# prebundle gem #{gemname} | sudo sh"
     end
 
